@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWTAuth.Core", "JWTAuth.Core\JWTAuth.Core.csproj", "{138B04A5-C976-4A2E-A79D-1FAD27E9D985}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWTAuth.Infrastructure", "JWTAuth.Infrastructure\JWTAuth.Infrastructure.csproj", "{5C795621-049A-4286-B613-F15C98234C21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWTAuth.Application", "JWTAuth.Application\JWTAuth.Application.csproj", "{47B758F1-50E4-4F0D-94F0-438A974F88FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWTAuth.Api", "JWTAuth.Api\JWTAuth.Api.csproj", "{95597933-3135-49DB-80CB-F8D4E341DCBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{138B04A5-C976-4A2E-A79D-1FAD27E9D985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{138B04A5-C976-4A2E-A79D-1FAD27E9D985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{138B04A5-C976-4A2E-A79D-1FAD27E9D985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{138B04A5-C976-4A2E-A79D-1FAD27E9D985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C795621-049A-4286-B613-F15C98234C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C795621-049A-4286-B613-F15C98234C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C795621-049A-4286-B613-F15C98234C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C795621-049A-4286-B613-F15C98234C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47B758F1-50E4-4F0D-94F0-438A974F88FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47B758F1-50E4-4F0D-94F0-438A974F88FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47B758F1-50E4-4F0D-94F0-438A974F88FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47B758F1-50E4-4F0D-94F0-438A974F88FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95597933-3135-49DB-80CB-F8D4E341DCBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95597933-3135-49DB-80CB-F8D4E341DCBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95597933-3135-49DB-80CB-F8D4E341DCBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95597933-3135-49DB-80CB-F8D4E341DCBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
