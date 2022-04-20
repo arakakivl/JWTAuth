@@ -19,6 +19,11 @@ public class AdmService : IAdmService
         return (await _repository.GetAll()).Select(x => x.AsAdmModel());
     }
 
+    public async Task<IEnumerable<AdmViewModel>> GetByRole(Role role)
+    {
+        return (await _repository.GetAll()).Select(x => x.AsAdmModel()).Where(x => x.Role == role);
+    }
+
     public async Task<AdmViewModel?> GetByUsername(string? username)
     {
         return (await _repository.GetAll()).Select(x => x.AsAdmModel()).Where(x => string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault();

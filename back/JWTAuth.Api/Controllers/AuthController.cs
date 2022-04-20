@@ -50,7 +50,10 @@ public class AuthController : ControllerBase
             return BadRequest("Usuário, email ou senha incorretos.");
 
         if (user.Password == model.Password)
+        {
             return Ok(new { token = _tokensService.GenerateToken(user) });
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+        }
         
         return BadRequest("Usuário, email ou senha incorretos.");
     }

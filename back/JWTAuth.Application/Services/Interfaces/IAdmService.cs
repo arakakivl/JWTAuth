@@ -7,6 +7,7 @@ namespace JWTAuth.Application.Services.Interfaces;
 public interface IAdmService
 { 
     Task<IEnumerable<AdmViewModel>> GetAll();
+    Task<IEnumerable<AdmViewModel>> GetByRole(Role role);
     Task<AdmViewModel?> GetByUsername(string? username);
 
     Task<bool> ChangeRole(string? username, Role role);

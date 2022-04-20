@@ -20,16 +20,28 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<AdmViewModel>>> GetAll()
+    public async Task<ActionResult<IEnumerable<AdmViewModel>>> GetAll([FromQuery] string role)
     {
-        return Ok(await _admService.GetAll());
+        if(string.Equals(role, Enum.GetName(typeof(Role), Role.User), StringComparison.InvariantCultureIgnoreCase))
+        {
+            return Ok(await _admService.GetByRole(Role.User));
+        }
+        else if (string.Equals(role, Enum.GetName(typeof(Role), Role.Admin), StringComparison.InvariantCultureIgnoreCase))
+        {
+            return Ok(await _admService.GetByRole(Role.Admin));
+        }
+
+        return BadRequest("Por favor, identifique a role necessária.");
     }
 
     [HttpGet("{username}")]
     public async Task<ActionResult<AdmViewModel?>> Get([FromQuery] string? username)
     {
-        return Ok(await _admService.GetByUsername(username));
+        var user = await _admService.GetByUsername(username);
+        if (user is null)
+            return NotFound("Usuário inexistente.");
+
+        return Ok(user);
     }
 
     [HttpPatch]
@@ -38,7 +50,7 @@ public class AdminController : ControllerBase
         if (await _admService.ChangeRole(model.Username, model.Role))
             return NoContent();
         
-        return NotFound();
+        return NotFound("Usuário inexistente.");
     }
     
     [HttpDelete]
