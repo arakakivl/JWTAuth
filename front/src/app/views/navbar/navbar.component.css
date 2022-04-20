@@ -1,0 +1,32 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 100px;
+    padding: 20px;
+}
+
+.toolbar__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+
+    width: 30%;
+}
+
+.toolbar__buttons {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+
+    width: 70%;
+}
+
+.toolbar__header__main {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}

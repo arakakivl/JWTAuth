@@ -1,0 +1,19 @@
+<mat-toolbar class="toolbar" color="primary">
+    <header class="toolbar__header">
+        <button mat-icon-button style="transform: scale(1.7);" [routerLink]="''"> <mat-icon>home</mat-icon></button>
+        
+        <section class="toolbar__header__main">
+            <h1 style="font-size: 30px;">JWTAuth</h1>
+            <p style="font-size: 80%;">Repositório em: <a href="https://github.com/arakakiv/JWTAuth">JWTAuth</a></p>
+        </section>
+    </header>
+    
+    <section class="toolbar__buttons">
+        <!-- For non authenticated users -->
+        <button mat-raised-button [routerLink]="'signup'">Sign Up!</button>
+        <button mat-raised-button [routerLink]="'signin'">Sign Ip!</button>
+
+        <!-- For authorized users -->
+        <button mat-raised-button [routerLink]="'admin'">Control Panel</button>
+    </section>
+</mat-toolbar>

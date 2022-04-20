@@ -1,0 +1,23 @@
+<main>
+    <header>
+        <h1>Control Panel</h1>
+        <p>Any problems, please, talk to the creator: <a href="https://github.com/arakakiv">arakakiv</a></p>
+    </header>
+
+    <mat-tab-group mat-align-tabs="center">
+        <mat-tab *ngIf="users" label="Users">
+            <mat-card *ngFor="let u in users">
+                <h2>{{u.username}}</h2>
+                <h3>Classificação: {{u.role}}</h3>
+                <h4>Registered on {{u.createdAt}}</h4>
+            </mat-card>
+        </mat-tab>
+        <mat-tab *ngIf="mods" label="Mods">
+            <mat-card *ngFor="let m in mods">
+                <h2>{{m.username}}</h2>
+                <h3>Classificação: {{m.role}}</h3>
+                <h4>Registered on {{m.createdAt}}</h4>
+            </mat-card>
+        </mat-tab>
+    </mat-tab-group>
+</main>
