@@ -14,8 +14,8 @@ export class UserService {
     })
   };
 
-  login(user : any) : Observable<string> {
-    return this.httpClient.post<string>(this.apiUrl + "login", user, this.httpOptions);
+  login(user : any) : Observable<any> {
+    return this.httpClient.post<any>(this.apiUrl + "login", user, this.httpOptions);
   }
 
   register(user : any) : Observable<any> {

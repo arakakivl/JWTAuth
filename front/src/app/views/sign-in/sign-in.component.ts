@@ -26,7 +26,8 @@ export class SignInComponent implements OnInit {
     // token on localStorage
     // redirect
     this.userService.login(this.formGroup?.value).subscribe(x => {
-      localStorage.setItem('token', x);
+      localStorage.setItem('token', x.token);
+      console.log(x.token);
       alert("Logado com sucesso!");
       this.router.navigate(['']);
     }, err => {
