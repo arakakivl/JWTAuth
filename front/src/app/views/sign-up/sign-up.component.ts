@@ -1,6 +1,6 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
+import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class SignUpComponent implements OnInit {
   constructor(
     private formBuilder : FormBuilder,
-    private usersService : UserService,
+    private usersService : AccountService,
     private router : Router) { }
   
   ngOnInit(): void {

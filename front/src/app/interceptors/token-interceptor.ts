@@ -1,15 +1,15 @@
 import { Inject, Injectable } from "@angular/core";
-import { TokenService } from "../token.service";
+import { AccountService } from "../services/account.service";
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    constructor(private tokenService : TokenService) {}
+    constructor(private accountService : AccountService) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const token = this.tokenService.getToken();
+        const token = this.accountService.getToken();
         let request : HttpRequest<any> = req;
 
         if (token) {

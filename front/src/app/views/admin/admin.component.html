@@ -6,14 +6,14 @@
 
     <mat-tab-group mat-align-tabs="center">
         <mat-tab *ngIf="users" label="Users">
-            <mat-card *ngFor="let u in users">
+            <mat-card *ngFor="let u of users">
                 <h2>{{u.username}}</h2>
                 <h3>Classificação: {{u.role}}</h3>
                 <h4>Registered on {{u.createdAt}}</h4>
             </mat-card>
         </mat-tab>
         <mat-tab *ngIf="mods" label="Mods">
-            <mat-card *ngFor="let m in mods">
+            <mat-card *ngFor="let m of mods">
                 <h2>{{m.username}}</h2>
                 <h3>Classificação: {{m.role}}</h3>
                 <h4>Registered on {{m.createdAt}}</h4>

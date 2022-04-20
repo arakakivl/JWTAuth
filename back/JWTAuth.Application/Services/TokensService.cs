@@ -29,7 +29,9 @@ public class TokensService : ITokensService
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.Role, Enum.GetName(typeof(Role), model.Role))
+                new Claim("username", model.Username),
+                new Claim(ClaimTypes.Role, model.Role.ToString()),
+                new Claim("createdAt", model.CreatedAt.ToString())
             }),
             Expires = DateTime.UtcNow.AddHours(2),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),

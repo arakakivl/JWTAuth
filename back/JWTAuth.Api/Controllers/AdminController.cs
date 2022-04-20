@@ -20,13 +20,14 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AdmViewModel>>> GetAll([FromQuery] string role)
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<AdmViewModel>>> GetAll([FromQuery] Role role)
     {
-        if(string.Equals(role, Enum.GetName(typeof(Role), Role.User), StringComparison.InvariantCultureIgnoreCase))
+        if(role == Role.User)
         {
             return Ok(await _admService.GetByRole(Role.User));
         }
-        else if (string.Equals(role, Enum.GetName(typeof(Role), Role.Admin), StringComparison.InvariantCultureIgnoreCase))
+        else if (role == Role.Admin)
         {
             return Ok(await _admService.GetByRole(Role.Admin));
         }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TokenService } from 'src/app/services/token.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,10 +7,10 @@ import { TokenService } from 'src/app/services/token.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  constructor(private tokenService : TokenService) { }
+  constructor(private accountService : AccountService) { }
 
   ngOnInit(): void {
-    this.isAuthorized = (this.tokenService.getToken() != undefined);
+    this.isAuthorized = (this.accountService.getToken() != undefined);
   }
 
   isAuthorized? : boolean;

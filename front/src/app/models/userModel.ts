@@ -1,5 +1,7 @@
+import { Role } from "./role";
+
 export interface UserModel {
     username : string,
-    role : string,
+    role : Role,
     createdAt : string
 }

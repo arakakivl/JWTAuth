@@ -20,7 +20,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 
-import { httpInterceptorsProviders } from './services/interceptors';
+import { httpInterceptorsProviders } from './interceptors';
 
 
 @NgModule({

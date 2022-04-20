@@ -36,7 +36,6 @@ public class AuthController : ControllerBase
         await _usersService.RegisterAsync(model);
 
         HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-
         return Ok();
     }
 
@@ -51,8 +50,8 @@ public class AuthController : ControllerBase
 
         if (user.Password == model.Password)
         {
-            return Ok(new { token = _tokensService.GenerateToken(user) });
             HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            return Ok(new { token = _tokensService.GenerateToken(user) });
         }
         
         return BadRequest("Usuário, email ou senha incorretos.");

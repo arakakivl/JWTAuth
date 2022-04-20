@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 export class SignInComponent implements OnInit {
   constructor(
     private formBuilder : FormBuilder,
-    private userService : UserService,
+    private userService : AccountService,
     private router : Router) { }
 
   ngOnInit(): void {
