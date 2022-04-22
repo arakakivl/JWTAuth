@@ -10,10 +10,13 @@
     
     <section class="toolbar__buttons">
         <!-- For non authenticated users -->
-        <button mat-raised-button *ngIf="!isAuthorized" [routerLink]="'signup'">Sign Up!</button>
-        <button mat-raised-button *ngIf="!isAuthorized" [routerLink]="'signin'">Sign Ip!</button>
+        <button mat-raised-button *ngIf="!isAuthenticated" [routerLink]="'signup'">Sign Up!</button>
+        <button mat-raised-button *ngIf="!isAuthenticated" [routerLink]="'signin'">Sign Ip!</button>
+
+        <!-- For authenticated users -->
+        <button mat-raised-button *ngIf="isAuthenticated" (click)="logout()">LogOut</button>
 
         <!-- For authorized users -->
-        <button mat-raised-button *ngIf="isAuthorized" [routerLink]="'admin'">Control Panel</button>
+        <button mat-raised-button *ngIf="isAdm" [routerLink]="'admin'">Control Panel</button>
     </section>
 </mat-toolbar>

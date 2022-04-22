@@ -14,15 +14,22 @@ namespace JWTAuth.Api.Controllers;
 public class AdminController : ControllerBase
 {
     private readonly IAdmService _admService;
-    public AdminController(IAdmService admService)
+    private readonly ITokensService _tokensService;
+    public AdminController(IAdmService admService, ITokensService tokensService)
     {
         _admService = admService;
+        _tokensService = tokensService;
     }
 
     [HttpGet]
-    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<AdmViewModel>>> GetAll([FromQuery] Role role)
     {
+        var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
+        if (!(await _tokensService.IsValid(token)))
+        {
+            return BadRequest("Não autorizado.");
+        }
+
         if(role == Role.User)
         {
             return Ok(await _admService.GetByRole(Role.User));
@@ -38,6 +45,12 @@ public class AdminController : ControllerBase
     [HttpGet("{username}")]
     public async Task<ActionResult<AdmViewModel?>> Get([FromQuery] string? username)
     {
+        var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
+        if (!(await _tokensService.IsValid(token)))
+        {
+            return BadRequest();
+        }
+
         var user = await _admService.GetByUsername(username);
         if (user is null)
             return NotFound("Usuário inexistente.");
@@ -48,6 +61,12 @@ public class AdminController : ControllerBase
     [HttpPatch]
     public async Task<ActionResult> ChangeRole([FromBody] ChangeRole model)
     {
+        var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
+        if (!(await _tokensService.IsValid(token)))
+        {
+            return BadRequest();
+        }
+
         if (await _admService.ChangeRole(model.Username, model.Role))
             return NoContent();
         
@@ -57,9 +76,20 @@ public class AdminController : ControllerBase
     [HttpDelete]
     public async Task<ActionResult> Delete([FromBody] string? username)
     {
+        var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
+        if (!(await _tokensService.IsValid(token)))
+        {
+            return BadRequest();
+        }
+
         if (await _admService.Delete(username))
             return NoContent();
 
         return NotFound("Usuário não encontrado ou administrador.");
+    }
+
+    private static string FormatHttpToken(string token)
+    {
+        return token.Replace("Bearer ", "");
     }
 }

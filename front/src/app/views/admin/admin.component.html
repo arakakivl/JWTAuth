@@ -4,7 +4,7 @@
         <p>Any problems, please, talk to the creator: <a href="https://github.com/arakakiv">arakakiv</a></p>
     </header>
 
-    <mat-tab-group mat-align-tabs="center">
+    <mat-tab-group mat-align-tabs="center" *ngIf="isAdm">
         <mat-tab *ngIf="users" label="Users">
             <mat-card *ngFor="let u of users">
                 <h2>{{u.username}}</h2>
@@ -20,4 +20,6 @@
             </mat-card>
         </mat-tab>
     </mat-tab-group>
+
+    <h1 *ngIf="!isAdm">YOU'RE NOT AUTHENTICATED OR AUTHORIZED.</h1>
 </main>

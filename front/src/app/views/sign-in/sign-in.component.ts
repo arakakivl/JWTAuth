@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AccountBehaviorService } from 'src/app/services/account-behavior.service';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private formBuilder : FormBuilder,
     private userService : AccountService,
-    private router : Router) { }
+    private router : Router,
+    private behavior : AccountBehaviorService) { }
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
@@ -22,18 +24,12 @@ export class SignInComponent implements OnInit {
   }
 
   signIn() : void {
-    // calls authService.signIn();
-    // token on localStorage
-    // redirect
     this.userService.login(this.formGroup?.value).subscribe(x => {
       localStorage.setItem('token', x.token);
-      console.log(x.token);
+      this.behavior.isAuthenticated.next(this.userService.isAuthenticated());
       alert("Logado com sucesso!");
       this.router.navigate(['']);
-    }, err => {
-      alert(err.error);
     });
-
   }
 
   formGroup? : FormGroup;

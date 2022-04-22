@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountBehaviorService } from 'src/app/services/account-behavior.service';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -7,9 +8,14 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  constructor(private accountService : AccountService) { }
+  constructor(
+    private accountService : AccountService,
+    private behavior : AccountBehaviorService) { }
   ngOnInit(): void {
-    this.isAuthenticated = (this.accountService.getToken() != null)
+    this.behavior.isAuthenticated.subscribe(x => {
+      this.isAuthenticated = x;
+    });
+
     this.username = (this.accountService.getUsername());
   }
 

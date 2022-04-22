@@ -25,12 +25,23 @@ export class AccountService {
     return this.httpClient.post(this.apiUrl + "register", user, this.httpOptions);
   }
 
-  getToken() : string | null {
-    return window.localStorage.getItem('token');
+  logout() : Observable<any> {
+    let token = window.localStorage.getItem('token');
+    window.localStorage.removeItem('token');
+    
+    return this.httpClient.post(this.apiUrl + "logout", { value: token }, this.httpOptions);
+  }
+
+  isAuthenticated() : boolean {
+    let token = window.localStorage.getItem('token');
+    if (token) // E DATA DE EXPIRAÇÃO OK
+      return true;
+    
+    return false;
   }
 
   decodeToken() : UserModel | undefined {
-    let token = this.getToken();
+    let token = window.localStorage.getItem('token');
     if (token) {
       return jwtDecode<UserModel>(token);
     }

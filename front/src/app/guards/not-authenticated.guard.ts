@@ -9,7 +9,7 @@ import { AccountService } from '../services/account.service';
 export class NotAuthenticatedGuard implements CanActivate {
   constructor(private accountService : AccountService) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : boolean {
-    if (!this.accountService.getToken()) {
+    if (!this.accountService.isAuthenticated()) {
       return true;
     }
     

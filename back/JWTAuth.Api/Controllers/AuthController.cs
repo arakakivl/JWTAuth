@@ -5,6 +5,7 @@ using JWTAuth.Core.Enums;
 using JWTAuth.Api.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using JWTAuth.Core.Entities;
 
 namespace JWTAuth.Api.Controllers;
 
@@ -14,6 +15,7 @@ public class AuthController : ControllerBase
 {
     private readonly ITokensService _tokensService;
     private readonly IUsersService _usersService;
+
     public AuthController(ITokensService tokensService, IUsersService usersService)
     {
         _tokensService = tokensService;
@@ -55,5 +57,20 @@ public class AuthController : ControllerBase
         }
         
         return BadRequest("Usuário, email ou senha incorretos.");
+    }
+
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<ActionResult> Logout()
+    {
+        var httpToken = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
+
+        await _tokensService.InvalidateToken(httpToken);
+        return NoContent();
+    }
+
+    private static string FormatHttpToken(string token)
+    {
+        return token.Replace("Bearer ", "");
     }
 }

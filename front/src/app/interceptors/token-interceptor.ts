@@ -9,7 +9,7 @@ export class TokenInterceptor implements HttpInterceptor {
     constructor(private accountService : AccountService) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const token = this.accountService.getToken();
+        const token = window.localStorage.getItem('token');
         let request : HttpRequest<any> = req;
 
         if (token) {

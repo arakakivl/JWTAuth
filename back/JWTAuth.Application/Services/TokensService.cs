@@ -8,15 +8,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using JWTAuth.Core.Enums;
-
+using JWTAuth.Core.Interfaces;
+using JWTAuth.Core.Entities;
 
 namespace JWTAuth.Application.Services;
 
 public class TokensService : ITokensService
 {
+    private readonly IInvalidTokensRepository _invalidTokensRepository;
     private readonly IConfiguration _configuration;
-    public TokensService(IConfiguration configuration)
+    public TokensService(
+        IInvalidTokensRepository invalidTokensRepository, 
+        IConfiguration configuration)
     {
+        _invalidTokensRepository = invalidTokensRepository;
         _configuration = configuration;
     }
     
@@ -40,5 +45,23 @@ public class TokensService : ITokensService
 
         var token = handler.CreateToken(descriptor);
         return handler.WriteToken(token);
+    }
+
+    public async Task InvalidateToken(string value)
+    {
+        Token token = new Token()
+        {
+            Value = value
+        };
+            
+        await _invalidTokensRepository.Add(token);
+    }
+
+    public async Task<bool> IsValid(string tokenFromRequest)
+    {
+        if (await _invalidTokensRepository.Get(new Token() { Value = tokenFromRequest }) == null)
+            return true;
+
+        return false;
     }
 }

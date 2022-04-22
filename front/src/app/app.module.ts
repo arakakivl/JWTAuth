@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
+import { AccountBehaviorService } from './services/account-behavior.service';
 
 import { httpInterceptorsProviders } from './interceptors';
 

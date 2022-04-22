@@ -15,10 +15,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<UsersDbContext>(opt => 
 {
-    opt.UseInMemoryDatabase("JWTAuthData");
+    opt.UseInMemoryDatabase("JWTAuthUsers");
+});
+
+builder.Services.AddDbContext<InvalidTokensDbContext>(opt => {
+    opt.UseInMemoryDatabase("JWTAuthInvalidTokens");
 });
 
 builder.Services.AddTransient<IUsersRepository, UsersRepository>();
+builder.Services.AddTransient<IInvalidTokensRepository, InvalidTokensRepository>();
 builder.Services.AddTransient<ITokensService, TokensService>();
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddTransient<IAdmService, AdmService>();

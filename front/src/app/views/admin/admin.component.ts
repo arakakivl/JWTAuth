@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Role } from 'src/app/models/role';
+import { AccountBehaviorService } from 'src/app/services/account-behavior.service';
+import { AccountService } from 'src/app/services/account.service';
 import { AdminService } from 'src/app/services/admin.service';
 import { UserModel } from '../../models/userModel';
 
@@ -8,10 +11,22 @@ import { UserModel } from '../../models/userModel';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  constructor(private adminService : AdminService) { }
+  constructor(
+    private adminService : AdminService,
+    private beahviorService : AccountBehaviorService,
+    private accountService : AccountService) { }
+
   ngOnInit(): void {
-    this.getUsers();
-    this.getMods();
+    this.beahviorService.isAuthenticated.subscribe(x => {
+      let role = Role[Role.Admin];
+      this.isAdm = x && this.accountService.getRole()?.toString() == role;
+
+      if(this.isAdm)
+      {
+        this.getUsers();
+        this.getMods();
+      }
+    });
   }
 
   getUsers() : void {
@@ -36,4 +51,5 @@ export class AdminComponent implements OnInit {
 
   users? : UserModel[];
   mods? : UserModel[];
+  isAdm? : boolean;
 }
