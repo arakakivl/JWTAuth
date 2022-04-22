@@ -14,7 +14,11 @@ public class InvalidTokensRepository : IInvalidTokensRepository
 
     public async Task Add(Token token)
     {
-        _dbContext.Add(token);
+        if (await _dbContext.InvalidTokens.SingleOrDefaultAsync(x => x.Value == token.Value) != null)
+            await Task.CompletedTask;
+        else
+            _dbContext.Add(token);
+        
         await _dbContext.SaveChangesAsync();
     }
 

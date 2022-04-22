@@ -21,13 +21,20 @@ export class SignInComponent implements OnInit {
       main: ["", [Validators.required, Validators.minLength(4)]],
       password: ["", [Validators.required, Validators.minLength(6)]]
     });
+
+    if (this.userService.isAuthenticated())
+    {
+      this.router.navigate(['']);
+    }
   }
 
   signIn() : void {
     this.userService.login(this.formGroup?.value).subscribe(x => {
       localStorage.setItem('token', x.token);
       this.behavior.isAuthenticated.next(this.userService.isAuthenticated());
+      
       alert("Logado com sucesso!");
+      
       this.router.navigate(['']);
     });
   }

@@ -21,6 +21,11 @@ export class SignUpComponent implements OnInit {
       password: ["", [Validators.required, Validators.minLength(6)]]
       }
     );
+
+    if (this.usersService.isAuthenticated())
+    {
+      this.router.navigate(['']);
+    }
   }
 
   signUp() : void {

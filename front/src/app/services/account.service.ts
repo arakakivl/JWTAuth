@@ -25,11 +25,10 @@ export class AccountService {
     return this.httpClient.post(this.apiUrl + "register", user, this.httpOptions);
   }
 
-  logout() : Observable<any> {
-    let token = window.localStorage.getItem('token');
+  logout() : void {    
+    let response = this.httpClient.post(this.apiUrl + "logout", {}).subscribe();
+
     window.localStorage.removeItem('token');
-    
-    return this.httpClient.post(this.apiUrl + "logout", { value: token }, this.httpOptions);
   }
 
   isAuthenticated() : boolean {

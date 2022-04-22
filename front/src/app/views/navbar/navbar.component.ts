@@ -23,12 +23,11 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() : void {
-    this.accountService.logout().subscribe();
+    this.accountService.logout();
     this.behavior.isAuthenticated.next(false);
     this.isAdm = false;
   }
 
   isAuthenticated? : boolean;
   isAdm? : boolean;
-
 }

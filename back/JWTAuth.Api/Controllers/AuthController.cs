@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("logout")]
-    [Authorize]
+    [RoleAuthorizationFilter(Role.User, Role.Admin)]
     public async Task<ActionResult> Logout()
     {
         var httpToken = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
