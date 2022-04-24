@@ -23,7 +23,7 @@ public class AdminController : ControllerBase
     
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AdmViewModel?>>> Get([FromQuery] string? username, Role? role)
+    public async Task<ActionResult<IEnumerable<AdmViewModel?>>> Get([FromQuery] string? username, [FromQuery] Role? role)
     {
         var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
         if (!(await _tokensService.IsValid(token)))
@@ -56,7 +56,7 @@ public class AdminController : ControllerBase
     }
     
     [HttpDelete]
-    public async Task<ActionResult> Delete([FromBody] string? username)
+    public async Task<ActionResult> Delete([FromQuery] string? username)
     {
         var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
         if (!(await _tokensService.IsValid(token)))
@@ -65,8 +65,9 @@ public class AdminController : ControllerBase
         if (username is null)
             return BadRequest();
 
-        if (await _admService.GetByUsername(username) is null)
-            return NotFound("Usuário não encontrado.");
+        var user = await _admService.GetByUsername(username);
+        if (user is null || user.Role == Role.Admin)
+            return BadRequest();
 
         if (await _admService.Delete(username))
             return NoContent();

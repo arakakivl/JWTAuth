@@ -38,21 +38,13 @@ export class AdminComponent implements OnInit {
 
   getUsers() : void {
     this.adminService.getUsers().subscribe(x => {
-      console.log("USERS:");
-      console.log(x);
       this.users = x;
-    }, err => {
-      alert("ERROR: " + err.error);
     });
   }
 
   getMods() : void {
     this.adminService.getMods().subscribe(x => {
-      console.log("MODS:");
-      console.log(x);
       this.mods = x;
-    }, err => {
-      alert("ERROR: " + err.error);
     });
   }
 
@@ -71,9 +63,17 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  deleteUser(username : string) : void {
+  deleteUser(username : string, role : Role) : void {
+    if (role == Role.Admin) {
+      alert("You cannot ban an Admin!");
+      return;
+    }
+
     if (this.isAdm) {
-      this.adminService.deleteUser(username);
+      this.adminService.deleteUser(username).subscribe();
+      
+      this.clearUsers();
+      this.getUsers();
     }
   }
 

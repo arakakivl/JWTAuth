@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Role } from '../models/role';
 import { UserModel } from '../models/userModel';
 
@@ -27,7 +27,6 @@ export class AccountService {
 
   logout() : void {    
     let response = this.httpClient.post(this.apiUrl + "logout", {}).subscribe();
-
     window.localStorage.removeItem('token');
   }
 
@@ -37,6 +36,10 @@ export class AccountService {
       return true;
     
     return false;
+  }
+
+  isValid() : Observable<boolean> {
+    return this.httpClient.post<boolean>(this.apiUrl, {});
   }
 
   decodeToken() : UserModel | undefined {

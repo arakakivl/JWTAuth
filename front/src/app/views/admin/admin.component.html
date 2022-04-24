@@ -17,9 +17,11 @@
                 <h4>Registered on {{u.createdAt}}</h4>
 
                 <mat-card-actions>
-                    <button mat-icon-button (click)="deleteUser(u.username)"><mat-icon>close</mat-icon></button>
+                    <button mat-icon-button (click)="deleteUser(u.username, u.role)"><mat-icon>close</mat-icon></button>
                     <mat-slide-toggle (change)="changeRole($event, u.username, u.role)" [checked]="u.role == 1"></mat-slide-toggle>
                 </mat-card-actions>
+
+                <hr>
             </mat-card>
         </mat-tab>
         <mat-tab label="Mods">
@@ -29,9 +31,11 @@
                 <h4>Registered on {{m.createdAt}}</h4>
 
                 <mat-card-actions>
-                    <button mat-icon-button (click)="deleteUser(m.username)"><mat-icon>close</mat-icon></button>
+                    <button mat-icon-button (click)="deleteUser(m.username, m.role)"><mat-icon>close</mat-icon></button>
                     <mat-slide-toggle (change)="changeRole($event,m.username, m.role)" [checked]="m.role == 1"></mat-slide-toggle>
                 </mat-card-actions>
+
+                <hr>
             </mat-card>
         </mat-tab>
     </mat-tab-group>

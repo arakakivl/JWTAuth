@@ -19,9 +19,7 @@ export class AdminService {
   }
 
   searchUser(username : string, role : Role) : Observable<UserModel[]> {
-    let x = this.httpClient.get<UserModel[]>(this.apiUrl + "?username=" + username + "&role=" + role);
-    console.log(x);
-    return x;
+    return this.httpClient.get<UserModel[]>(this.apiUrl + "?username=" + username + "&role=" + role);
   }
 
   changeRole(username : string, role : Role) : Observable<any> {
@@ -29,7 +27,7 @@ export class AdminService {
   }
 
   deleteUser(username : string) : Observable<any> {
-    return this.httpClient.post<any>(this.apiUrl, { username: username });
+    return this.httpClient.delete<any>(this.apiUrl + "?username=" + username);
   }
 
   private readonly apiUrl : string = "https://localhost:7166/admin"

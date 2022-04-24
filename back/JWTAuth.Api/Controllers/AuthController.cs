@@ -69,6 +69,19 @@ public class AuthController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost]
+    [RoleAuthorizationFilter(Role.User, Role.Admin)]
+    public async Task<ActionResult<bool>> TokenValid()
+    {
+        var httpToken = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
+        if (httpToken is null)
+            return BadRequest();
+        
+        var result = await _tokensService.IsValid(httpToken);
+        Console.WriteLine(result);
+        return Ok(result);
+    }
+
     private static string FormatHttpToken(string token)
     {
         return token.Replace("Bearer ", "");
