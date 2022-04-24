@@ -5,7 +5,6 @@ using JWTAuth.Core.Enums;
 using JWTAuth.Api.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using JWTAuth.Core.Entities;
 
 namespace JWTAuth.Api.Controllers;
 
@@ -36,8 +35,6 @@ public class AuthController : ControllerBase
             return BadRequest("Usuário já existente!");
 
         await _usersService.RegisterAsync(model);
-
-        HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
         return Ok();
     }
 
@@ -52,7 +49,6 @@ public class AuthController : ControllerBase
 
         if (user.Password == model.Password)
         {
-            HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return Ok(new { token = _tokensService.GenerateToken(user) });
         }
         
@@ -78,7 +74,6 @@ public class AuthController : ControllerBase
             return BadRequest();
         
         var result = await _tokensService.IsValid(httpToken);
-        Console.WriteLine(result);
         return Ok(result);
     }
 

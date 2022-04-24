@@ -1,4 +1,3 @@
-using JWTAuth.Application.InputModels;
 using JWTAuth.Application.ViewModels;
 using JWTAuth.Core.Enums;
 

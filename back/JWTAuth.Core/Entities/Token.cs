@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using JWTAuth.Core.Enums;
 
 namespace JWTAuth.Core.Entities;
 

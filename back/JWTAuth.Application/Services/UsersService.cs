@@ -37,7 +37,7 @@ public class UsersService : IUsersService
         var userByEmail = (await _repository.GetAll()).SingleOrDefault(x => x != null && string.Equals(x.Email, nameOrEmail, StringComparison.InvariantCultureIgnoreCase));
 
         if (userByName != null && userByEmail != null)
-            throw new Exception("Existe um usuário com o usuário igual ao email!");
+            throw new Exception("Existe um usuário com o username igual ao email!");
         
         if (userByName == null && userByEmail == null)
             return null;

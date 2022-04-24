@@ -3,7 +3,6 @@ using JWTAuth.Application.InputModels;
 using JWTAuth.Application.Services.Interfaces;
 using JWTAuth.Application.ViewModels;
 using JWTAuth.Core.Enums;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JWTAuth.Api.Controllers;
@@ -43,10 +42,7 @@ public class AdminController : ControllerBase
     public async Task<ActionResult> ChangeRole([FromBody] ChangeRole model)
     {
         var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
-        if (!(await _tokensService.IsValid(token)))
-            return BadRequest();
-
-        if (model.Username is null)
+        if (!(await _tokensService.IsValid(token)) || model.Username is null)
             return BadRequest();
 
         if (await _admService.ChangeRole(model.Username, model.Role))
@@ -59,10 +55,7 @@ public class AdminController : ControllerBase
     public async Task<ActionResult> Delete([FromQuery] string? username)
     {
         var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
-        if (!(await _tokensService.IsValid(token)))
-            return BadRequest();
-
-        if (username is null)
+        if (!(await _tokensService.IsValid(token)) || username is null)
             return BadRequest();
 
         var user = await _admService.GetByUsername(username);
@@ -71,8 +64,8 @@ public class AdminController : ControllerBase
 
         if (await _admService.Delete(username))
             return NoContent();
-        else
-            return BadRequest();
+            
+        return BadRequest();
     }
 
     private static string FormatHttpToken(string token)

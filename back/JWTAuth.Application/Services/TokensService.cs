@@ -1,13 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using JWTAuth.Application.InputModels;
 using JWTAuth.Application.Services.Interfaces;
 using JWTAuth.Application.ViewModels;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using JWTAuth.Core.Enums;
 using JWTAuth.Core.Interfaces;
 using JWTAuth.Core.Entities;
 

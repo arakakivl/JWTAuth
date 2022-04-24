@@ -7,24 +7,34 @@ public static class UserModel
 {
     public static UserViewModel AsUserModel(this User? u)
     {
-        return new UserViewModel()
+        if (u != null)
         {
-            Id = u!.Id,
-            Username = u.Username,
-            Email = u.Email,
-            Role = u.Role,
-            Password = u.Password,
-            CreatedAt = u.CreatedAt
-        };
+            return new UserViewModel()
+            {
+                Id = u.Id,
+                Username = u.Username,
+                Email = u.Email,
+                Role = u.Role,
+                Password = u.Password,
+                CreatedAt = u.CreatedAt
+            };
+        }
+
+        throw new Exception("User is null!");
     }
 
     public static AdmViewModel AsAdmModel(this User? u)
     {
-        return new AdmViewModel()
+        if (u != null)
         {
-            Username = u!.Username,
-            Role = u.Role,
-            CreatedAt = u.CreatedAt
-        };
+            return new AdmViewModel()
+            {
+                Username = u.Username,
+                Role = u.Role,
+                CreatedAt = u.CreatedAt
+            };
+        }
+
+        throw new Exception("Adm is null!");
     }
 }
