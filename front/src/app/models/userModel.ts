@@ -5,3 +5,7 @@ export interface UserModel {
     role : Role,
     createdAt : string
 }
+
+export interface DecodedToken {
+    exp : number
+}

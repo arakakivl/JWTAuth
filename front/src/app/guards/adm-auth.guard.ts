@@ -17,7 +17,7 @@ export class AdmAuthGuard implements CanActivate {
       this.valid = x;
     });
 
-    if (role?.toString().toLowerCase() == nameOfAdm.toLowerCase() && this.valid) {
+    if (role?.toString().toLowerCase() == nameOfAdm.toLowerCase() && this.valid && this.accountService.isAuthenticated()) {
       return true;
     } else {
       return false;
@@ -25,5 +25,4 @@ export class AdmAuthGuard implements CanActivate {
   }
 
   valid? : boolean;
-  
 }

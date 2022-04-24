@@ -13,8 +13,8 @@
         <mat-tab label="Users">
             <mat-card *ngFor="let u of users">
                 <h2>{{u.username}}</h2>
-                <h3>Classificação: {{u.role}}</h3>
-                <h4>Registered on {{u.createdAt}}</h4>
+                <h3>Role: User</h3>
+                <h4>Registered on: {{u.createdAt | localDateTime }}</h4>
 
                 <mat-card-actions>
                     <button mat-icon-button (click)="deleteUser(u.username, u.role)"><mat-icon>close</mat-icon></button>
@@ -27,8 +27,8 @@
         <mat-tab label="Mods">
             <mat-card *ngFor="let m of mods">
                 <h2>{{m.username}}</h2>
-                <h3>Classificação: {{m.role}}</h3>
-                <h4>Registered on {{m.createdAt}}</h4>
+                <h3>Role: Admin</h3>
+                <h4>Registered on: {{m.createdAt | localDateTime}}</h4>
 
                 <mat-card-actions>
                     <button mat-icon-button (click)="deleteUser(m.username, m.role)"><mat-icon>close</mat-icon></button>

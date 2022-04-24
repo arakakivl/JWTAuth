@@ -16,12 +16,12 @@ import { UserModel } from '../../models/userModel';
 export class AdminComponent implements OnInit {
   constructor(
     private adminService : AdminService,
-    private beahviorService : AccountBehaviorService,
+    private behaviorService : AccountBehaviorService,
     private accountService : AccountService,
     private router : Router) { }
 
   ngOnInit(): void {
-    this.beahviorService.isAuthenticated.subscribe(x => {
+    this.behaviorService.isAuthenticated.subscribe(x => {
       let role = Role[Role.Admin];
       this.isAdm = x && this.accountService.getRole()?.toString() == role;
     });

@@ -32,8 +32,6 @@ export class SignUpComponent implements OnInit {
     this.usersService.register(this.formGroup?.value).subscribe(x => {
       alert("Registrado com sucesso!");
       this.router.navigate(['signin']);
-    }, err => {
-      alert(err.error);
     });
   }
 

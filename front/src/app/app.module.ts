@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { httpInterceptorsProviders } from './interceptors';
+import { LocalDateTimePipe } from './pipes/local-date-time.pipe';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { httpInterceptorsProviders } from './interceptors';
     SignUpComponent,
     AdminComponent,
     NavbarComponent,
+    LocalDateTimePipe,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,7 @@ import { httpInterceptorsProviders } from './interceptors';
     HttpClientModule,
     MatSlideToggleModule
   ],
-  providers: [httpInterceptorsProviders],
+  providers: [httpInterceptorsProviders, LocalDateTimePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
