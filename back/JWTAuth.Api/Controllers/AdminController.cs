@@ -20,42 +20,23 @@ public class AdminController : ControllerBase
         _admService = admService;
         _tokensService = tokensService;
     }
+    
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AdmViewModel>>> GetAll([FromQuery] Role role)
+    public async Task<ActionResult<IEnumerable<AdmViewModel?>>> Get([FromQuery] string? username, Role? role)
     {
         var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
         if (!(await _tokensService.IsValid(token)))
-        {
-            return BadRequest("Não autorizado.");
-        }
-
-        if(role == Role.User)
-        {
-            return Ok(await _admService.GetByRole(Role.User));
-        }
-        else if (role == Role.Admin)
-        {
-            return Ok(await _admService.GetByRole(Role.Admin));
-        }
-
-        return BadRequest("Por favor, identifique a role necessária.");
-    }
-
-    [HttpGet("{username}")]
-    public async Task<ActionResult<AdmViewModel?>> Get([FromQuery] string? username)
-    {
-        var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
-        if (!(await _tokensService.IsValid(token)))
-        {
             return BadRequest();
-        }
 
-        var user = await _admService.GetByUsername(username);
-        if (user is null)
-            return NotFound("Usuário inexistente.");
-
-        return Ok(user);
+        if (username != null && role == null)
+            return Ok(new List<AdmViewModel?>() { (await _admService.GetByUsername(username)) });
+        else if (username == null && role != null)
+            return Ok(await _admService.GetByRole((Role)role));
+        else if (username != null && role != null)
+            return Ok(await _admService.Search(username, (Role)role));
+        else
+            return Ok(await _admService.GetAll());
     }
 
     [HttpPatch]
@@ -63,9 +44,10 @@ public class AdminController : ControllerBase
     {
         var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
         if (!(await _tokensService.IsValid(token)))
-        {
             return BadRequest();
-        }
+
+        if (model.Username is null)
+            return BadRequest();
 
         if (await _admService.ChangeRole(model.Username, model.Role))
             return NoContent();
@@ -78,14 +60,18 @@ public class AdminController : ControllerBase
     {
         var token = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
         if (!(await _tokensService.IsValid(token)))
-        {
             return BadRequest();
-        }
+
+        if (username is null)
+            return BadRequest();
+
+        if (await _admService.GetByUsername(username) is null)
+            return NotFound("Usuário não encontrado.");
 
         if (await _admService.Delete(username))
             return NoContent();
-
-        return NotFound("Usuário não encontrado ou administrador.");
+        else
+            return BadRequest();
     }
 
     private static string FormatHttpToken(string token)

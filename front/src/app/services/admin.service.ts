@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Role } from '../models/role';
@@ -16,6 +16,20 @@ export class AdminService {
 
   getMods() : Observable<UserModel[]> {
     return this.httpClient.get<UserModel[]>(this.apiUrl + "?role=" + Role.Admin);
+  }
+
+  searchUser(username : string, role : Role) : Observable<UserModel[]> {
+    let x = this.httpClient.get<UserModel[]>(this.apiUrl + "?username=" + username + "&role=" + role);
+    console.log(x);
+    return x;
+  }
+
+  changeRole(username : string, role : Role) : Observable<any> {
+    return this.httpClient.patch<any>(this.apiUrl, { username: username, role: role });
+  }
+
+  deleteUser(username : string) : Observable<any> {
+    return this.httpClient.post<any>(this.apiUrl, { username: username });
   }
 
   private readonly apiUrl : string = "https://localhost:7166/admin"

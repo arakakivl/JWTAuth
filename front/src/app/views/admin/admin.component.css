@@ -1,0 +1,13 @@
+main {
+    margin-top: 50px;
+}
+
+main > header {
+    text-align: center;
+}
+
+.find-user-container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+}

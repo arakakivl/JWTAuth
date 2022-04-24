@@ -24,12 +24,17 @@ public class AdmService : IAdmService
         return (await _repository.GetAll()).Select(x => x.AsAdmModel()).Where(x => x.Role == role);
     }
 
-    public async Task<AdmViewModel?> GetByUsername(string? username)
+    public async Task<AdmViewModel?> GetByUsername(string username)
     {
         return (await _repository.GetAll()).Select(x => x.AsAdmModel()).Where(x => string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault();
     }
 
-    public async Task<bool> ChangeRole(string? username, Role role)
+    public async Task<IEnumerable<AdmViewModel>> Search(string username, Role role)
+    {
+        return (await _repository.GetAll()).Select(x => x.AsAdmModel()).Where(x => x.Username!.ToLower().Contains(username.ToLower()) && x.Role == role);
+    }
+
+    public async Task<bool> ChangeRole(string username, Role role)
     {
         var user = (await _repository.GetAll()).Where(x => x != null && string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault();
         if (user is null)
@@ -41,7 +46,7 @@ public class AdmService : IAdmService
         return true;
     }
 
-    public async Task<bool> Delete(string? username)
+    public async Task<bool> Delete(string username)
     {
         var user = (await _repository.GetAll()).Where(x => x != null && string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault();
         if (user is null || user.Role == Role.Admin)

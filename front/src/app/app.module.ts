@@ -19,7 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
-import { AccountBehaviorService } from './services/account-behavior.service';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { httpInterceptorsProviders } from './interceptors';
 
@@ -46,7 +46,8 @@ import { httpInterceptorsProviders } from './interceptors';
     MatInputModule,
     MatTabsModule,
     MatCardModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSlideToggleModule
   ],
   providers: [httpInterceptorsProviders],
   bootstrap: [AppComponent]

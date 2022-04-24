@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<UserViewModel>> Register([FromBody] UserRegister model)
     {
         if (!ModelState.IsValid)
-            return BadRequest();
+            return BadRequest("Por favor, verifique seus dados e tente novamente.");
         
         var userInDb = await _usersService.Get(model.Username);
         var emailInDb = await _usersService.Get(model.Email);

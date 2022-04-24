@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { Role } from 'src/app/models/role';
 import { AccountBehaviorService } from 'src/app/services/account-behavior.service';
@@ -24,15 +26,14 @@ export class AdminComponent implements OnInit {
       this.isAdm = x && this.accountService.getRole()?.toString() == role;
     });
 
-    if(this.isAdm)
-    {
-      this.getUsers();
-      this.getMods();
-    }
-    else
+    if(!this.isAdm)
     {
       this.router.navigate(['']);
+      return;
     }
+    
+    this.getUsers();
+    this.selectedTab = 0;
   }
 
   getUsers() : void {
@@ -55,7 +56,67 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  changeRole(toggleChanged : MatSlideToggleChange, username : string, role : Role) : void {
+    if (role == Role.Admin) {
+      alert("You cannot change the role of an ADM!");
+      toggleChanged.source.checked = !toggleChanged.checked;
+      return;
+    }
+
+    if (this.isAdm) {
+      this.adminService.changeRole(username, 1).subscribe();
+      
+      this.clearUsers();
+      this.getUsers();
+    }
+  }
+
+  deleteUser(username : string) : void {
+    if (this.isAdm) {
+      this.adminService.deleteUser(username);
+    }
+  }
+
+  findUsers() : void {
+    let input : HTMLInputElement = document.getElementById('findUserInput') as HTMLInputElement;
+    this.clearUsers();
+    
+    switch(this.selectedTab) {
+      case 0:
+        this.adminService.searchUser(input.value, Role.User).subscribe(x => {
+          this.users = x;
+        });
+        break;
+      case 1:
+        this.adminService.searchUser(input.value, Role.Admin).subscribe(x => {
+          this.mods = x;
+        });
+        break;
+    }
+  }
+
+  public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
+    this.clearUsers();
+    
+    switch (tabChangeEvent.index) {
+      case 0:
+        this.getUsers();
+        break;
+      case 1:
+        this.getMods();
+        break;
+    }
+
+    this.selectedTab = tabChangeEvent.index;
+  }
+
+  private clearUsers() : void {
+    this.users = undefined;
+    this.mods = undefined;
+  }
+
   users? : UserModel[];
   mods? : UserModel[];
   isAdm? : boolean;
+  selectedTab? : Number;
 }

@@ -1,25 +1,40 @@
-<main>
+<main *ngIf="isAdm">
     <header>
         <h1>Control Panel</h1>
         <p>Any problems, please, talk to the creator: <a href="https://github.com/arakakiv">arakakiv</a></p>
     </header>
 
-    <mat-tab-group mat-align-tabs="center" *ngIf="isAdm">
-        <mat-tab *ngIf="users" label="Users">
+    <section class="find-user-container">
+        <input matInput id="findUserInput" style="width: 50%; padding: 20px;" placeholder="Find by username..." type="text">
+        <button mat-button color="primary" (click)="findUsers()"><mat-icon>search</mat-icon></button>
+    </section>
+
+    <mat-tab-group (selectedTabChange)="tabChanged($event)" mat-align-tabs="center" *ngIf="isAdm">
+        <mat-tab label="Users">
             <mat-card *ngFor="let u of users">
                 <h2>{{u.username}}</h2>
                 <h3>Classificação: {{u.role}}</h3>
                 <h4>Registered on {{u.createdAt}}</h4>
+
+                <mat-card-actions>
+                    <button mat-icon-button (click)="deleteUser(u.username)"><mat-icon>close</mat-icon></button>
+                    <mat-slide-toggle (change)="changeRole($event, u.username, u.role)" [checked]="u.role == 1"></mat-slide-toggle>
+                </mat-card-actions>
             </mat-card>
         </mat-tab>
-        <mat-tab *ngIf="mods" label="Mods">
+        <mat-tab label="Mods">
             <mat-card *ngFor="let m of mods">
                 <h2>{{m.username}}</h2>
                 <h3>Classificação: {{m.role}}</h3>
                 <h4>Registered on {{m.createdAt}}</h4>
+
+                <mat-card-actions>
+                    <button mat-icon-button (click)="deleteUser(m.username)"><mat-icon>close</mat-icon></button>
+                    <mat-slide-toggle (change)="changeRole($event,m.username, m.role)" [checked]="m.role == 1"></mat-slide-toggle>
+                </mat-card-actions>
             </mat-card>
         </mat-tab>
     </mat-tab-group>
-
-    <h1 *ngIf="!isAdm">YOU'RE NOT AUTHENTICATED OR AUTHORIZED.</h1>
 </main>
+
+<h1 *ngIf="!isAdm">YOU'RE NOT AUTHENTICATED OR AUTHORIZED.</h1>
