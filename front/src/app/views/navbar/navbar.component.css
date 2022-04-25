@@ -1,26 +1,25 @@
-.toolbar {
+.toolbar, .toolbar__header, .toolbar__buttons {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+}
 
-    height: 100px;
+.toolbar {
+    height: fit-content;
     padding: 20px;
 }
 
 .toolbar__header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-
     width: 30%;
 }
 
 .toolbar__buttons {
-    display: flex;
-    justify-content: end;
     gap: 10px;
+    width: 100%;
+}
 
+.toolbar__buttons > button {
     width: 70%;
 }
 
@@ -29,4 +28,30 @@
     display: flex;
     flex-direction: column;
     text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+    .toolbar, .toolbar__header, .toolbar__buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .toolbar__header {
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .toolbar__buttons {
+        justify-content: flex-end   ;
+    }
+
+    .toolbar__buttons {
+        width: 70%;
+    }
+    
+    .toolbar__buttons > button {
+        width: 20%;
+    }
 }
