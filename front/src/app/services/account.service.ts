@@ -100,6 +100,6 @@ export class AccountService {
     return undefined;
   }
 
-  private readonly apiUrl : string = "https://localhost:7166/";
+  private readonly apiUrl : string = "http://localhost:5166/";
 }
 

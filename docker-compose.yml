@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  front:
+    image: front
+    build:
+      context: front
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+  
+  jwtauthapi:
+    image: jwtauthapi
+    build:
+      context: .
+      dockerfile: back/JWTAuth.Api/Dockerfile
+    ports:
+      - 5166:5166
+  

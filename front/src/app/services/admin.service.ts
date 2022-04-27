@@ -30,5 +30,5 @@ export class AdminService {
     return this.httpClient.delete<any>(this.apiUrl + "?username=" + username);
   }
 
-  private readonly apiUrl : string = "https://localhost:7166/admin"
+  private readonly apiUrl : string = "http://localhost:5166/admin"
 }

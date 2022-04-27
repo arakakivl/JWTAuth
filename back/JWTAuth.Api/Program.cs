@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore.InMemory;
 using JWTAuth.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using JWTAuth.Core.Interfaces;
@@ -10,8 +9,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddDbContext<UsersDbContext>(opt => 
 {
@@ -46,24 +43,17 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+builder.Services.AddCors();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors(x => {
+    x.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+});
 
 app.MapControllers();
 
