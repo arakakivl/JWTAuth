@@ -6,8 +6,8 @@ namespace JWTAuth.Infrastructure.Persistence.Repositories;
 
 public class InvalidTokensRepository : IInvalidTokensRepository
 {
-    private readonly InvalidTokensDbContext _dbContext;
-    public InvalidTokensRepository(InvalidTokensDbContext context)
+    private readonly AppDbContext _dbContext;
+    public InvalidTokensRepository(AppDbContext context)
     {
         _dbContext = context;
     }

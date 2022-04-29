@@ -9,14 +9,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+var connection = @"Server=db;Database=master;User=sa;Password=Your_password123;";
 
-builder.Services.AddDbContext<UsersDbContext>(opt => 
+builder.Services.AddDbContext<AppDbContext>(opt => 
 {
-    opt.UseInMemoryDatabase("JWTAuthUsers");
-});
-
-builder.Services.AddDbContext<InvalidTokensDbContext>(opt => {
-    opt.UseInMemoryDatabase("JWTAuthInvalidTokens");
+    opt.UseSqlServer(connection);
 });
 
 builder.Services.AddTransient<IUsersRepository, UsersRepository>();
@@ -56,5 +53,10 @@ app.UseCors(x => {
 });
 
 app.MapControllers();
+
+using (var sp = builder.Services.BuildServiceProvider())
+{
+    sp.GetService<AppDbContext>().Database.Migrate();
+}
 
 app.Run();

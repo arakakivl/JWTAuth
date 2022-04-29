@@ -6,8 +6,8 @@ namespace JWTAuth.Infrastructure.Persistence.Repositories;
 
 public class UsersRepository : IUsersRepository
 {
-    private readonly UsersDbContext _context;
-    public UsersRepository(UsersDbContext context)
+    private readonly AppDbContext _context;
+    public UsersRepository(AppDbContext context)
     {
         _context = context;
     }
