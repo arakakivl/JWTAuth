@@ -18,6 +18,7 @@ services:
       - 5166:5166
     depends_on:
       - db
+    command: ["./wait-for-it.sh", "db:1433", "-t", "120", "--", "dotnet", "JWTAuth.Api.dll"]
 
   db:
     image: mcr.microsoft.com/mssql/server

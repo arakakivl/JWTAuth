@@ -22,8 +22,11 @@ RUN dotnet build "JWTAuth.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "JWTAuth.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+COPY ["back/JWTAuth.Api/wait-for-it.sh", "/app/publish"]
 
 FROM base AS final
 WORKDIR /app
+
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "JWTAuth.Api.dll"]
+USER root
+RUN chmod +x wait-for-it.sh
