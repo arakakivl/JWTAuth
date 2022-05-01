@@ -54,9 +54,11 @@ app.UseCors(x => {
 
 app.MapControllers();
 
+
 using (var sp = builder.Services.BuildServiceProvider())
 {
     sp.GetService<AppDbContext>().Database.Migrate();
 }
+
 
 app.Run();

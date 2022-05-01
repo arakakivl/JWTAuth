@@ -11,18 +11,11 @@ export class AdmAuthGuard implements CanActivate {
   constructor(private accountService : AccountService) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let role = this.accountService.getRole();
-    let nameOfAdm = Role[Role.Admin];
 
-    this.accountService.isValid().subscribe(x => {
-      this.valid = x;
-    });
-
-    if (role?.toString().toLowerCase() == nameOfAdm.toLowerCase() && this.valid && this.accountService.isAuthenticated()) {
+    if (this.accountService.getRole()?.toString() == role && this.accountService.isAuthenticated()) {
       return true;
     } else {
       return false;
     }
   }
-
-  valid? : boolean;
 }

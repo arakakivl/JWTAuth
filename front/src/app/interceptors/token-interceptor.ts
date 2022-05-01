@@ -6,7 +6,7 @@ import { catchError } from "rxjs";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    constructor(private accountService : AccountService) {}
+    constructor() {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token = window.localStorage.getItem('token');
@@ -23,11 +23,11 @@ export class TokenInterceptor implements HttpInterceptor {
 
     private handleError(error : HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
-            console.error("Erro: " + error.error.message);
+            alert(error.error.message);
+            return throwError(error.error.message);
         } else {
-            console.error("Código de erro: " + error.status + "; erro: " + JSON.stringify(error.error));
+            alert(JSON.stringify(error.error));
+            return throwError(JSON.stringify(error.error));
         }
-
-        return throwError("Ocorreu um erro, tente novamente.");
     }
 }

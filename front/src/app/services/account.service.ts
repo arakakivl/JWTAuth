@@ -27,7 +27,7 @@ export class AccountService {
   }
 
   logout() : void {    
-    let response = this.httpClient.post(this.apiUrl + "logout", {}).subscribe();
+    this.httpClient.post(this.apiUrl + "logout", {}).subscribe();
     window.localStorage.removeItem('token');
   }
 
@@ -54,10 +54,7 @@ export class AccountService {
     return true;
   }
 
-  isValid() : Observable<boolean> {
-    return this.httpClient.post<boolean>(this.apiUrl, {});
-  }
-
+  /* About getting data from the Token */
   private getExpirationDate() : Date | undefined {
     let strToken = window.localStorage.getItem('token');
     if (strToken) {
@@ -72,7 +69,6 @@ export class AccountService {
     return undefined;
   }
 
-  /* About getting data from the Token */
   private decodeToken() : UserModel | undefined {
     let token = window.localStorage.getItem('token');
     if (token) {
