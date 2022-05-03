@@ -4,16 +4,16 @@ Projeto que utiliza **Json Web Tokens** como meio de **autenticação** e de **a
 ## Endpoints
 A api possui tanto endpoints que permitem usuários não autenticados quanto autenticados e o mesmo vale para autorizados e não autorizados.
 
-### **Registro, login, refresh de tokens e logout: **
+### **Registro, login, refresh de tokens e logout:**
  - `POST /signup` `[AllowAnonymous]`
  - `POST /signin` `[AllowAnonymous]`
  - `POST /refresh` `[AllowAnonymous]`
  - `POST /logout` `[Users e Admins]`
  
 ### **Gerenciamento de usuários**
- - `GET /admin` [Admins]
- - `PATCH /admin` [Admins]
- - `DELETE /admin` [Admins]
+ - `GET /admin` `[Admins]`
+ - `PATCH /admin` `[Admins]`
+ - `DELETE /admin` `[Admins]`
 
 ## Conceitos e recursos utilizados
  - dotnet CLI
