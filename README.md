@@ -25,6 +25,8 @@ A api possui tanto endpoints que permitem usuários não autenticados quanto aut
  - xUnit
  - JWT Tokens
  - Docker
+ - Docker Compose
+ - Wait-For-It.sh (https://github.com/vishnubob/wait-for-it)
  - Angular CLI
  - Angular Material
  - RxJs
