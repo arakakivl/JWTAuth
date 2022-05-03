@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Role } from 'src/app/models/role';
 import { AccountBehaviorService } from 'src/app/services/account-behavior.service';
-import { AccountService } from 'src/app/services/account.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,20 +11,31 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class NavbarComponent implements OnInit {
   constructor(
-    private accountService : AccountService,
-    private behavior : AccountBehaviorService) { }
+    private tokenService : TokenService,
+    private behavior : AccountBehaviorService,
+    private authService : AuthService) { }
 
   ngOnInit(): void {
     this.behavior.isAuthenticated.subscribe(x => {
       this.isAuthenticated = x;
 
       let role = Role[Role.Admin]
-      this.isAdm = x && (this.accountService.getRole()?.toString() == role);
+      this.isAdm = x && (this.tokenService.getRole()?.toString() == role);
     });
   }
 
   logout() : void {
-    this.accountService.logout();
+    this.authService.logout().subscribe({
+      next: () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh');
+      },
+
+      error: () => {
+        // do something on error!
+      }
+    });
+    
     this.behavior.isAuthenticated.next(false);
     this.isAdm = false;
   }

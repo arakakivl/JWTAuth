@@ -14,28 +14,30 @@ public class AdmService : IAdmService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<AdmViewModel>> GetAll()
+    public async Task<IEnumerable<AdmViewModel>> GetAllAsync()
     {
-        return (await _repository.GetAll()).Select(x => x.AsAdmModel());
+        return (await _repository.GetAllAsync()).Select(x => x.AsAdmModel());
     }
 
-    public async Task<IEnumerable<AdmViewModel>> GetByRole(Role role)
+    public async Task<IEnumerable<AdmViewModel>> GetByRoleAsync(Role role)
     {
-        return (await _repository.GetAll()).Select(x => x.AsAdmModel())
-        .Where(x => x.Role == role);
+        return (await _repository.GetAllAsync())
+            .Select(x => x.AsAdmModel())
+            .Where(x => x.Role == role);
     }
 
-    public async Task<AdmViewModel?> GetByUsername(string username)
+    public async Task<AdmViewModel?> GetByUsernameAsync(string username)
     {
-        return (await _repository.GetAll()).Select(x => x.AsAdmModel())
-        .Where(
-            x => string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase))
+        return (await _repository.GetAllAsync())
+            .Where(x => string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase) && x != null)
+            .Select(x => x.AsAdmModel())
+    
         .SingleOrDefault();
     }
 
-    public async Task<IEnumerable<AdmViewModel>> Search(string username, Role role)
+    public async Task<IEnumerable<AdmViewModel>> GetByBothAsync(string username, Role role)
     {
-        return (await _repository.GetAll())
+        return (await _repository.GetAllAsync())
         .Select(x => x.AsAdmModel())
         .Where(
             x => x.Username!.ToLower().Contains(username.ToLower()) && x.Role == role);
@@ -43,9 +45,8 @@ public class AdmService : IAdmService
 
     public async Task<bool> ChangeRole(string username, Role role)
     {
-        var user = (await _repository.GetAll())
-        .Where(
-            x => x != null && string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase))
+        var user = (await _repository.GetAllAsync())
+            .Where(x => x != null && string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase))
             .SingleOrDefault();
             
         if (user is null)
@@ -53,13 +54,13 @@ public class AdmService : IAdmService
 
         user.Role = role;
 
-        await _repository.Update(user);
+        await _repository.UpdateAsync(user);
         return true;
     }
 
     public async Task<bool> Delete(string username)
     {
-        var user = (await _repository.GetAll())
+        var user = (await _repository.GetAllAsync())
         .Where(
             x => x != null && string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase))
             .SingleOrDefault();
@@ -67,7 +68,7 @@ public class AdmService : IAdmService
         if (user is null || user.Role == Role.Admin)
             return false;
 
-        await _repository.Delete(user.Id);
+        await _repository.DeleteAsync(user.Id);
         return true;
     }
 }

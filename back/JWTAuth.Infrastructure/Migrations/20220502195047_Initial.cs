@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace JWTAuth.Infrastructure.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +18,17 @@ namespace JWTAuth.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InvalidTokens", x => x.Value);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Value = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Value);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,6 +53,9 @@ namespace JWTAuth.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "InvalidTokens");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "Users");

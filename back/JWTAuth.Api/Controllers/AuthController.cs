@@ -12,12 +12,16 @@ namespace JWTAuth.Api.Controllers;
 [Route("/")]
 public class AuthController : ControllerBase
 {
-    private readonly ITokensService _tokensService;
+    private readonly IAcessTokensService _acessService;
+    private readonly IRefreshTokensService _refreshService;
+
     private readonly IUsersService _usersService;
 
-    public AuthController(ITokensService tokensService, IUsersService usersService)
+    public AuthController(IAcessTokensService acessService, IRefreshTokensService refreshService, IUsersService usersService)
     {
-        _tokensService = tokensService;
+        _acessService = acessService;
+        _refreshService = refreshService;
+
         _usersService = usersService;
     }
     
@@ -28,8 +32,8 @@ public class AuthController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest("Por favor, verifique seus dados e tente novamente.");
         
-        var userInDb = await _usersService.Get(model.Username);
-        var emailInDb = await _usersService.Get(model.Email);
+        var userInDb = await _usersService.GetAsync(model.Username);
+        var emailInDb = await _usersService.GetAsync(model.Email);
 
         if (userInDb != null || emailInDb != null)
             return BadRequest("Usuário já existente!");
@@ -42,17 +46,35 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<string>> Login([FromBody] UserLogin model)
     {
-        var user = await _usersService.Get(model.Main);
+        var user = await _usersService.GetAsync(model.Main);
 
         if (user is null)
             return BadRequest("Usuário, email ou senha incorretos.");
 
         if (user.Password == model.Password)
-        {
-            return Ok(new { token = _tokensService.GenerateToken(user) });
-        }
+            return Ok(new { token = await _acessService.GenerateAsync(user), refresh = await _refreshService.GenerateAsync() });
         
         return BadRequest("Usuário, email ou senha incorretos.");
+    }
+
+
+    [HttpPost("refresh")]
+    [AllowAnonymous]
+    public async Task<ActionResult<object>> Refresh([FromBody] Refresh tokens)
+    {
+        if (tokens is null || tokens.OldRefreshToken is null || tokens.OldAccessToken is null)   
+            return BadRequest();
+
+        if (!(await _acessService.IsValidAsync(tokens.OldAccessToken)))
+            return BadRequest();
+
+        if (!await _refreshService.IsValidAsync((Guid)tokens.OldRefreshToken))
+            return BadRequest();
+
+        var newRefreshToken = await _refreshService.GenerateAsync((Guid)tokens.OldRefreshToken);
+        var newAccessToken = await _acessService.GenerateAsync(tokens.OldAccessToken);
+        
+        return await Task.FromResult(Ok(new { token = newAccessToken, refresh = newRefreshToken }));
     }
 
     [HttpPost("logout")]
@@ -61,7 +83,7 @@ public class AuthController : ControllerBase
     {
         var httpToken = FormatHttpToken(HttpContext.Request.Headers["Authorization"][0]);
 
-        await _tokensService.InvalidateToken(httpToken);
+        await _acessService.InvalidateAsync(httpToken);
         return NoContent();
     }
 
@@ -73,7 +95,7 @@ public class AuthController : ControllerBase
         if (httpToken is null)
             return BadRequest();
         
-        var result = await _tokensService.IsValid(httpToken);
+        var result = await _acessService.IsValidAsync(httpToken);
         return Ok(result);
     }
 

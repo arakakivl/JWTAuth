@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountBehaviorService } from 'src/app/services/account-behavior.service';
-import { AccountService } from 'src/app/services/account.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,7 +13,8 @@ import { AccountService } from 'src/app/services/account.service';
 export class SignInComponent implements OnInit {
   constructor(
     private formBuilder : FormBuilder,
-    private userService : AccountService,
+    private tokenService : TokenService,
+    private authService : AuthService,
     private router : Router,
     private behavior : AccountBehaviorService) { }
 
@@ -22,22 +24,31 @@ export class SignInComponent implements OnInit {
       password: ["", [Validators.required, Validators.minLength(6)]]
     });
 
-    if (this.userService.isAuthenticated())
+    if (this.tokenService.isAuthenticated())
     {
       this.router.navigate(['']);
     }
   }
 
   signIn() : void {
-    this.userService.login(this.formGroup?.value).subscribe(x => {
-      localStorage.setItem('token', x.token);
-      this.behavior.isAuthenticated.next(this.userService.isAuthenticated());
-      
-      alert("Logado com sucesso!");
-      
-      this.router.navigate(['']);
+    this.authService.login(this.formGroup?.value).subscribe({
+      next: tkns => {
+        this.authService.addTokens(tkns.token, tkns.refresh);
+        
+        alert("Logado com sucesso!");
+        if (this.loginError) {
+          this.loginError = undefined;
+        }
+
+        this.behavior.isAuthenticated.next(this.tokenService.isAuthenticated());
+        this.router.navigate(['']);
+      },
+      error: err => {
+        this.loginError = "Credenciais inválidas.";
+      }
     });
   }
 
   formGroup? : FormGroup;
+  loginError? : string;
 }

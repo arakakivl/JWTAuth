@@ -2,8 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JWTAuth.Core.Entities;
 
-public class Token
+public class RefreshToken
 {
+
     [Key]
-    public string Value { get; set; }
+    public Guid Value { get; set; }
 }

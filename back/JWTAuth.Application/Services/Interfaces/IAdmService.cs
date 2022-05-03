@@ -5,12 +5,13 @@ namespace JWTAuth.Application.Services.Interfaces;
 
 public interface IAdmService
 { 
-    Task<IEnumerable<AdmViewModel>> GetAll();
-    Task<IEnumerable<AdmViewModel>> GetByRole(Role role);
-    Task<AdmViewModel?> GetByUsername(string username);
-    Task<IEnumerable<AdmViewModel>> Search(string username, Role role);
+    Task<IEnumerable<AdmViewModel>> GetAllAsync();
+
+    Task<IEnumerable<AdmViewModel>> GetByRoleAsync(Role role);
+    Task<AdmViewModel?> GetByUsernameAsync(string username);
+
+    Task<IEnumerable<AdmViewModel>> GetByBothAsync(string username, Role role);
 
     Task<bool> ChangeRole(string username, Role role);
-
     Task<bool> Delete(string username);
 }

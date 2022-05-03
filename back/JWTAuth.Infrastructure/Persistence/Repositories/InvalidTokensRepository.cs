@@ -6,26 +6,21 @@ namespace JWTAuth.Infrastructure.Persistence.Repositories;
 
 public class InvalidTokensRepository : IInvalidTokensRepository
 {
-    private readonly AppDbContext _dbContext;
+    private readonly AppDbContext _context;
     public InvalidTokensRepository(AppDbContext context)
     {
-        _dbContext = context;
+        _context = context;
     }
 
-    public async Task Add(Token token)
+    public async Task AddAsync(AccessToken token)
     {
-        if (await _dbContext.InvalidTokens.SingleOrDefaultAsync(x => x.Value == token.Value) != null)
-            await Task.CompletedTask;
-        else
-            _dbContext.Add(token);
-        
-        await _dbContext.SaveChangesAsync();
+        _context.Add(token);
+        await _context.SaveChangesAsync();
     }
 
-    public async Task<Token?> Get(Token token)
+    public async Task<AccessToken?> GetAsync(AccessToken token)
     {
-        var tokn = await _dbContext.InvalidTokens.SingleOrDefaultAsync(x => x.Value == token.Value);
+        var tokn = await _context.InvalidTokens.SingleOrDefaultAsync(x => x.Value == token.Value);
         return tokn;
-
     }
 }

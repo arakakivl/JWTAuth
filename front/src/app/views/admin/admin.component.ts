@@ -4,7 +4,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { Role } from 'src/app/models/role';
 import { AccountBehaviorService } from 'src/app/services/account-behavior.service';
-import { AccountService } from 'src/app/services/account.service';
+import { TokenService } from 'src/app/services/token.service';
 import { AdminService } from 'src/app/services/admin.service';
 import { UserModel } from '../../models/userModel';
 
@@ -17,13 +17,13 @@ export class AdminComponent implements OnInit {
   constructor(
     private adminService : AdminService,
     private behaviorService : AccountBehaviorService,
-    private accountService : AccountService,
+    private tokenService : TokenService,
     private router : Router) { }
 
   ngOnInit(): void {
     this.behaviorService.isAuthenticated.subscribe(x => {
       let role = Role[Role.Admin];
-      this.isAdm = x && this.accountService.getRole()?.toString() == role;
+      this.isAdm = x && this.tokenService.getRole()?.toString() == role;
     });
 
     if(!this.isAdm)

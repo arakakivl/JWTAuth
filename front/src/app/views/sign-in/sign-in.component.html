@@ -15,5 +15,6 @@
         </mat-form-field>
 
         <button mat-raised-button color="basic" style="margin-top: 20px;" (click)="signIn()">Sign In!</button>
+        <span *ngIf="loginError" style="color: red;">{{loginError}}</span>
     </form>
 </main>

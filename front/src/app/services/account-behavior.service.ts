@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AccountService } from './account.service';
+import { TokenService } from './token.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AccountBehaviorService {
-    constructor(private accountService : AccountService) {}
-    public isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.accountService.isAuthenticated());
+    constructor(private tokenService : TokenService) {}
+    public isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.tokenService.isAuthenticated());
 }

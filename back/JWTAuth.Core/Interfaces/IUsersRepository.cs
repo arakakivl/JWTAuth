@@ -4,11 +4,11 @@ namespace JWTAuth.Core.Interfaces;
 
 public interface IUsersRepository
 {
-    Task Create(User u);
+    Task CreateAsync(User u);
 
-    Task<IEnumerable<User?>> GetAll();
-    Task<User?> Get(int id);
+    Task<IEnumerable<User?>> GetAllAsync();
+    Task<User?> GetAsync(int id);
 
-    Task Update(User u);
-    Task Delete(int id);
+    Task UpdateAsync(User u);
+    Task DeleteAsync(int id);
 }

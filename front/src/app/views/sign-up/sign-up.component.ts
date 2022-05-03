@@ -1,7 +1,8 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from 'src/app/services/account.service';
+import { TokenService } from 'src/app/services/token.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,8 +12,9 @@ import { Router } from '@angular/router';
 export class SignUpComponent implements OnInit {
   constructor(
     private formBuilder : FormBuilder,
-    private usersService : AccountService,
-    private router : Router) { }
+    private tokenService : TokenService,
+    private router : Router,
+    private authService : AuthService) { }
   
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
@@ -22,16 +24,20 @@ export class SignUpComponent implements OnInit {
       }
     );
 
-    if (this.usersService.isAuthenticated())
-    {
+    if (this.tokenService.isAuthenticated()) {
       this.router.navigate(['']);
     }
   }
 
   signUp() : void {
-    this.usersService.register(this.formGroup?.value).subscribe(x => {
-      alert("Registrado com sucesso!");
-      this.router.navigate(['signin']);
+    this.authService.register(this.formGroup?.value).subscribe({
+      next: () => {
+        alert("Registrado com sucesso!");
+        this.router.navigate(['signin']);
+      },
+      error: () => {
+        alert("Usuário já cadastrado! Verifique seus dados e tente novamente.")
+      }
     });
   }
 

@@ -12,23 +12,23 @@ public class UsersRepository : IUsersRepository
         _context = context;
     }
     
-    public async Task Create(User u)
+    public async Task CreateAsync(User u)
     {
         _context.Users.Add(u);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<User?>> GetAll()
+    public async Task<IEnumerable<User?>> GetAllAsync()
     {
         return await _context.Users.ToListAsync();
     }
 
-    public async Task<User?> Get(int id)
+    public async Task<User?> GetAsync(int id)
     {
         return await _context.Users.SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task Update(User u)
+    public async Task UpdateAsync(User u)
     {
         var entity = await _context.FindAsync<User>(u.Id);
         if (entity is null)
@@ -38,7 +38,7 @@ public class UsersRepository : IUsersRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task Delete(int id)
+    public async Task DeleteAsync(int id)
     {
         var entity = await _context.FindAsync<User>(id);
         if (entity is null)

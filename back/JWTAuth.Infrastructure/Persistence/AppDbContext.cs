@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
         
     }
 
-    public DbSet<User> Users { get; set; } = null!;
-    public DbSet<Token> InvalidTokens { get; set; } = null!;
+    public DbSet<User> Users => Set<User>();
+    public DbSet<AccessToken> InvalidTokens => Set<AccessToken>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 }

@@ -6,5 +6,5 @@ namespace JWTAuth.Application.Services.Interfaces;
 public interface IUsersService
 { 
     Task RegisterAsync(UserRegister model);
-    Task<UserViewModel?> Get(string? nameOrEmail);
+    Task<UserViewModel?> GetAsync(string? nameOrEmail);
 }

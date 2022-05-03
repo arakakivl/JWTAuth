@@ -18,7 +18,7 @@ public class UsersService : IUsersService
     
     public async Task RegisterAsync(UserRegister model)
     {
-        Role role = (await _repository.GetAll()).Count() == 0 ? Role.Admin : Role.User;
+        Role role = (await _repository.GetAllAsync()).Count() == 0 ? Role.Admin : Role.User;
         var user = new User()
         {
             Username = model.Username,
@@ -28,13 +28,13 @@ public class UsersService : IUsersService
             CreatedAt = DateTimeOffset.UtcNow
         };
 
-        await _repository.Create(user);
+        await _repository.CreateAsync(user);
     }
 
-    public async Task<UserViewModel?> Get(string? nameOrEmail)
+    public async Task<UserViewModel?> GetAsync(string? nameOrEmail)
     {
-        var userByName = (await _repository.GetAll()).SingleOrDefault(x => x != null && string.Equals(x.Username, nameOrEmail, StringComparison.InvariantCultureIgnoreCase));
-        var userByEmail = (await _repository.GetAll()).SingleOrDefault(x => x != null && string.Equals(x.Email, nameOrEmail, StringComparison.InvariantCultureIgnoreCase));
+        var userByName = (await _repository.GetAllAsync()).SingleOrDefault(x => x != null && string.Equals(x.Username, nameOrEmail, StringComparison.InvariantCultureIgnoreCase));
+        var userByEmail = (await _repository.GetAllAsync()).SingleOrDefault(x => x != null && string.Equals(x.Email, nameOrEmail, StringComparison.InvariantCultureIgnoreCase));
 
         if (userByName != null && userByEmail != null)
             throw new Exception("Existe um usuário com o username igual ao email!");
