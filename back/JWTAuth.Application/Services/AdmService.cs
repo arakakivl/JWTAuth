@@ -8,67 +8,61 @@ namespace JWTAuth.Application.Services;
 
 public class AdmService : IAdmService
 {
-    private readonly IUsersRepository _repository;
-    public AdmService(IUsersRepository repository)
+    private readonly IUnitOfWork _unitOfWork;
+    public AdmService(IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<AdmViewModel>> GetAllAsync()
     {
-        return (await _repository.GetAllAsync()).Select(x => x.AsAdmModel());
+        return (await _unitOfWork.UsersRepository.GetAllAsync()).Select(x => x.AsAdmModel());
     }
 
     public async Task<IEnumerable<AdmViewModel>> GetByRoleAsync(Role role)
     {
-        return (await _repository.GetAllAsync())
+        return (await _unitOfWork.UsersRepository.GetAllAsync())
             .Select(x => x.AsAdmModel())
-            .Where(x => x.Role == role);
+                .Where(x => x.Role == role);
     }
 
     public async Task<AdmViewModel?> GetByUsernameAsync(string username)
     {
-        return (await _repository.GetAllAsync())
-            .Where(x => string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase) && x != null)
+        return (await _unitOfWork.UsersRepository.GetAllAsync())
             .Select(x => x.AsAdmModel())
-    
-        .SingleOrDefault();
+                .SingleOrDefault(x => string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase));
     }
 
     public async Task<IEnumerable<AdmViewModel>> GetByBothAsync(string username, Role role)
     {
-        return (await _repository.GetAllAsync())
-        .Select(x => x.AsAdmModel())
-        .Where(
-            x => x.Username!.ToLower().Contains(username.ToLower()) && x.Role == role);
+        return (await _unitOfWork.UsersRepository.GetAllAsync())
+            .Select(x => x.AsAdmModel())
+                .Where(x => x.Username.ToLower().Contains(username.ToLower()) && x.Role == role);
     }
 
     public async Task<bool> ChangeRole(string username, Role role)
     {
-        var user = (await _repository.GetAllAsync())
-            .Where(x => x != null && string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase))
-            .SingleOrDefault();
+        var user = (await _unitOfWork.UsersRepository.GetAllAsync())
+            .SingleOrDefault(x => string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase));
             
         if (user is null)
             return false;
 
         user.Role = role;
 
-        await _repository.UpdateAsync(user);
+        await _unitOfWork.UsersRepository.UpdateAsync(user.Id, user);
         return true;
     }
 
     public async Task<bool> Delete(string username)
     {
-        var user = (await _repository.GetAllAsync())
-        .Where(
-            x => x != null && string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase))
-            .SingleOrDefault();
+        var user = (await _unitOfWork.UsersRepository.GetAllAsync())
+            .SingleOrDefault(x => string.Equals(x.Username, username, StringComparison.InvariantCultureIgnoreCase));
             
         if (user is null || user.Role == Role.Admin)
             return false;
 
-        await _repository.DeleteAsync(user.Id);
+        await _unitOfWork.UsersRepository.DeleteAsync(user.Id);
         return true;
     }
 }

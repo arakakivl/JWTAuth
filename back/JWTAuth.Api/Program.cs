@@ -7,6 +7,7 @@ using JWTAuth.Infrastructure.Persistence.Repositories;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using JWTAuth.Core.Interfaces.NonGenericRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 var connection = @"Server=db;Database=master;User=sa;Password=Your_password123;";
@@ -19,9 +20,12 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 builder.Services.AddTransient<IUsersRepository, UsersRepository>();
 builder.Services.AddTransient<IInvalidTokensRepository, InvalidTokensRepository>();
+builder.Services.AddTransient<IRefreshTokensRepository, RefreshTokensRepository>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddTransient<IAcessTokensService, AcessTokensService>();
 builder.Services.AddTransient<IRefreshTokensService, RefreshTokensService>();
-builder.Services.AddTransient<IRefreshTokensRepository, RefreshTokensRepository>();
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddTransient<IAdmService, AdmService>();
 

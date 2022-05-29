@@ -12,13 +12,11 @@ namespace JWTAuth.Application.Services;
 
 public class AcessTokensService : IAcessTokensService
 {
-    private readonly IInvalidTokensRepository _invalidTokensRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IConfiguration _configuration;
-    public AcessTokensService(
-        IInvalidTokensRepository invalidTokensRepository, 
-        IConfiguration configuration)
+    public AcessTokensService(IUnitOfWork unitOfWork, IConfiguration configuration)
     {
-        _invalidTokensRepository = invalidTokensRepository;
+        _unitOfWork = unitOfWork;
         _configuration = configuration;
     }
     
@@ -62,10 +60,10 @@ public class AcessTokensService : IAcessTokensService
     }
 
     public async Task InvalidateAsync(string value) =>
-        await _invalidTokensRepository.AddAsync(new AccessToken() { Value = value });
+        await _unitOfWork.InvalidRepository.AddAsync(new AccessToken() { Value = value });
 
     public async Task<bool> IsValidAsync(string tokenFromRequest) =>
-        await _invalidTokensRepository.GetAsync(new AccessToken() { Value = tokenFromRequest }) == null;
+        await _unitOfWork.InvalidRepository.GetByKeyValueAsync(new AccessToken() { Value = tokenFromRequest }) == null;
 
     private async Task<ClaimsPrincipal> GetClaimsAsync(string acess)
     {

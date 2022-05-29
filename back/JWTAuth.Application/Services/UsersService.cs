@@ -10,15 +10,15 @@ namespace JWTAuth.Application.Services;
 
 public class UsersService : IUsersService
 {
-    private readonly IUsersRepository _repository;
-    public UsersService(IUsersRepository repository)
+    private readonly IUnitOfWork _unitOfWork;
+    public UsersService(IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task RegisterAsync(UserRegister model)
     {
-        Role role = (await _repository.GetAllAsync()).Count() == 0 ? Role.Admin : Role.User;
+        Role role = (await _unitOfWork.UsersRepository.GetAllAsync()).Count() == 0 ? Role.Admin : Role.User;
         var user = new User()
         {
             Username = model.Username,
@@ -28,13 +28,13 @@ public class UsersService : IUsersService
             CreatedAt = DateTimeOffset.UtcNow
         };
 
-        await _repository.CreateAsync(user);
+        await _unitOfWork.UsersRepository.AddAsync(user);
     }
 
     public async Task<UserViewModel?> GetAsync(string? nameOrEmail)
     {
-        var userByName = (await _repository.GetAllAsync()).SingleOrDefault(x => x != null && string.Equals(x.Username, nameOrEmail, StringComparison.InvariantCultureIgnoreCase));
-        var userByEmail = (await _repository.GetAllAsync()).SingleOrDefault(x => x != null && string.Equals(x.Email, nameOrEmail, StringComparison.InvariantCultureIgnoreCase));
+        var userByName = (await _unitOfWork.UsersRepository.GetAllAsync()).SingleOrDefault(x => string.Equals(x.Username, nameOrEmail, StringComparison.InvariantCultureIgnoreCase));
+        var userByEmail = (await _unitOfWork.UsersRepository.GetAllAsync()).SingleOrDefault(x => string.Equals(x.Email, nameOrEmail, StringComparison.InvariantCultureIgnoreCase));
 
         if (userByName != null && userByEmail != null)
             throw new Exception("Existe um usuário com o username igual ao email!");

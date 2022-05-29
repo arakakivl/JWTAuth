@@ -1,23 +1,21 @@
-using System.Security.Claims;
 using JWTAuth.Application.Services.Interfaces;
 using JWTAuth.Core.Entities;
 using JWTAuth.Core.Interfaces;
-using Microsoft.IdentityModel.Tokens;
 
 namespace JWTAuth.Application.Services;
 
 public class RefreshTokensService : IRefreshTokensService
 {
-    private readonly IRefreshTokensRepository _repository;
-    public RefreshTokensService(IRefreshTokensRepository repository)
+    private readonly IUnitOfWork _unitOfWork;
+    public RefreshTokensService(IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<Guid> GenerateAsync()
     {
         var token = Guid.NewGuid();
-        await _repository.AddAsync(new RefreshToken() { Value = token });
+        await _unitOfWork.RefreshRepository.AddAsync(new RefreshToken() { Value = token });
 
         return await Task.FromResult(token);
     }
@@ -26,12 +24,12 @@ public class RefreshTokensService : IRefreshTokensService
     {
         var newToken = Guid.NewGuid();
 
-        await _repository.DeleteAsync(new RefreshToken() { Value = oldToken });
-        await _repository.AddAsync(new RefreshToken() { Value = newToken });
+        await _unitOfWork.RefreshRepository.DeleteAsync(new RefreshToken() { Value = oldToken });
+        await _unitOfWork.RefreshRepository.AddAsync(new RefreshToken() { Value = newToken });
 
         return await Task.FromResult(newToken);
     }
 
     public async Task<bool> IsValidAsync(Guid token) => 
-        await _repository.GetAsync(new RefreshToken() { Value = token }) != null;
+        await _unitOfWork.RefreshRepository.GetByKeyValueAsync(new RefreshToken() { Value = token }) != null;
 }
