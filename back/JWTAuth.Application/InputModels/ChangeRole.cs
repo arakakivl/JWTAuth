@@ -6,7 +6,7 @@ namespace JWTAuth.Application.InputModels;
 public class ChangeRole
 {
     [Required]
-    public string? Username { get; set; }
+    public string Username { get; set; } = null!;
     
     [Required]
     public Role Role { get; set; }

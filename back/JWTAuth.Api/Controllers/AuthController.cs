@@ -62,13 +62,9 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<object>> Refresh([FromBody] Refresh tokens)
     {
-        if (tokens is null || tokens.OldRefreshToken is null || tokens.OldAccessToken is null)   
-            return BadRequest();
-
         if (!(await _acessService.IsValidAsync(tokens.OldAccessToken)))
             return BadRequest();
-
-        if (!await _refreshService.IsValidAsync((Guid)tokens.OldRefreshToken))
+        else if (!await _refreshService.IsValidAsync(tokens.OldRefreshToken))
             return BadRequest();
 
         var newRefreshToken = await _refreshService.GenerateAsync((Guid)tokens.OldRefreshToken);

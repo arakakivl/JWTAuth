@@ -60,7 +60,7 @@ app.MapControllers();
 
 using (var sp = builder.Services.BuildServiceProvider())
 {
-    sp.GetService<AppDbContext>().Database.Migrate();
+    sp?.GetService<AppDbContext>()?.Database.Migrate();
 }
 
 

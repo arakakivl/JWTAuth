@@ -1,7 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace JWTAuth.Application.InputModels;
 
 public class Refresh
 {
-    public string? OldAccessToken { get; set; }
-    public Guid? OldRefreshToken { get; set; }
+    [Required]
+    public string OldAccessToken { get; set; } = null!;
+
+    [Required]
+    public Guid OldRefreshToken { get; set; }
 }
