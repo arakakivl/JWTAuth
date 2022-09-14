@@ -1,28 +1,25 @@
-# JWTAuth APi
-Projeto que utiliza **Json Web Tokens** como meio de **autenticação** e de **autorização** de usuários. Uma interface gráfica em **Angular 13** também está incluída, para a demonstração de uma aplicação real e completa.
+# JWTAuth
+Its backend is made in .NET and the frontend is available with Angular 13. For learning the basics of authentication and authorization, this app uses Json Web Tokens for authentication and role based authorization.
 
 ## Endpoints
-A api possui tanto endpoints que permitem usuários não autenticados quanto autenticados e o mesmo vale para autorizados e não autorizados.
 
-### **Registro, login, refresh de tokens e logout:**
+### **Signup, Signin, Refresh token and logout:**
  - `POST /signup` `[AllowAnonymous]`
  - `POST /signin` `[AllowAnonymous]`
  - `POST /refresh` `[AllowAnonymous]`
  - `POST /logout` `[Users e Admins]`
  
-### **Gerenciamento de usuários**
+### **User management**
  - `GET /admin` `[Admins]`
  - `PATCH /admin` `[Admins]`
  - `DELETE /admin` `[Admins]`
 
-## Conceitos e recursos utilizados
+## Concepts and tools
  - dotnet CLI
  - Entity Framework Core
  - Clean Architecture
  - Repository Pattern
  - SQL Server
- - Swagger
- - xUnit
  - JWT Tokens
  - Docker
  - Docker Compose
@@ -35,52 +32,52 @@ A api possui tanto endpoints que permitem usuários não autenticados quanto aut
  - Interceptors
  - Pipes
  
-E é claro, muita pesquisa no **google** e no **StackOverflow**!
+It's really neccessary to explicity the huge use of StackOverflow?! 
 
-## Como executar
-O projeto pode ser executado tanto pela `dotnet CLI` quanto pelo `Docker`:
+## Running
+This app can be run within Docker containers or even by `dotnet CLI`:
 ### dotnet cli
-**Requisitos:**
+**Requirements:**
  - .NET SDK 6
  - Angular CLI
  
- 1. Faça o download ou clone este repositório via git:
+ 1. Clone this repository:
  ```
  git clone https://github.com/arakakiv/jwtauth
  ```
  
- 2. Restaure as dependências entrando nos diretórios de cada parte do projeto (back e front) com os seguintes comandos:
+ 2. Restore each dependency using the `dotnet cli` and the `npm` package manager (you'll need nodejs):
  ```
  cd jwtauth/back && dotnet restore
  cd jwtauth/front && npm install
  ```
- 
- 3. Edite o arquivo back/JWTAuth.Api/Program.cs e comente a linha referente ao uso do SQL Server (16) e descomente a linha referente a utilização de um banco de dados na memória (17):
+
+ 3. Update the app to use an "In memory database" provided by EF Core by uncommenting the line 17 and commenting the line 16:
  ```
-    // opt.UseSqlServer(connection); Comente esta linha!
-    opt.UseInMemoryDatabase("JWTAuthApiDb"); // Descomente essa!
+    // opt.UseSqlServer(connection); Comment!
+    opt.UseInMemoryDatabase("JWTAuthApiDb"); // Uncomment!
  ```
 
-4. Rode o back-end e depois rode o front-end com os seguintes comandos:
+4. Run the backend and after doing it, run the frontend:
 ```
 cd jwtauth/back/JWTAuth.Api && dotnet run
 cd jwtauth/front && ng serve --open -p 3000
 ```
 
-5. Vá para `http://localhost:3000` e é isso!
+5. Go to the specified port in the angular app!
 
 ### Docker
-**Requisitos**
+**Requirements**
 - Docker
 - Docker compose
 
- 1. Faça o download ou clone este repositório via git:
+ 1. Clone this repository:
  ```
  git clone https://github.com/arakakiv/jwtauth
  ```
 
-2. Use o Docker Compose para 'buildar' e executar a aplicação:
+2. Build and run the application using `docker-compose` with the command below:
 ```
 docker-compose up --build
 ```
-3. Vá para `http://localhost:3000` e é isso!
+3. Go to the specified port and thats all!
